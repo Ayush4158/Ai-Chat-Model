@@ -4,6 +4,7 @@ import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation'
 import React, { useState } from 'react'
+import { FaGithub, FaGoogle } from 'react-icons/fa';
 
 
 const page = () => {
@@ -61,6 +62,15 @@ const page = () => {
             <h1>BACK</h1>
           </div>
 
+          <div className='flex gap-x-2 py-5 w-full justify-center items-center '>
+            <button onClick={() => signIn("google")} className='w-[45%] cursor-pointer border flex justify-center items-center py-2 rounded-md bg-white '>
+              <FaGoogle className="text-black" size={25} />
+            </button>
+            <button onClick={() => signIn("github")} className='w-[45%] cursor-pointer border flex justify-center items-center py-2 rounded-md bg-white '>
+              <FaGithub className="text-black" size={25} />
+            </button>
+          </div>
+
           <div className='flex flex-col justify-center items-center mt-5 gap-y-3 py-3'>
             <div className='text-[1.6vw] '>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email*' className='outline-none p-2 px-4 border rounded-full' required />
@@ -71,7 +81,7 @@ const page = () => {
           </div>
 
           <div className='w-full p-3 '>
-            <button onClick={handleSubmit} className='text-[2vw] text-black bg-white py-2 w-full rounded-md'>
+            <button onClick={handleSubmit} className='text-[2vw] cursor-pointer text-black bg-white py-2 w-full rounded-md'>
               { loading ? 'Loading...' : 'LOGIN'}
             </button>
           </div>

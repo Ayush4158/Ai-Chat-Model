@@ -63,12 +63,12 @@ const page = () => {
           </div>
 
           <div className='w-full p-3 '>
-            <button onClick={handleSubmit} className='text-[2vw] text-black bg-white py-2 w-full rounded-md'>
-              REGISTER
+            <button onClick={handleSubmit} className='text-[2vw] cursor-pointer text-black bg-white py-2 w-full rounded-md'>
+              {loading ? 'Loading...' : 'REGISTER'}
             </button>
           </div>
 
-          <div className='w-full text-center flex mt-5 text-[1.8vw] font-semibold '>
+          <div className='w-full text-center cursor-pointer flex mt-5 text-[1.8vw] font-semibold '>
             <p>You already have an account?</p>
             <Link href='/login' className='text-blue-300 underline'>login</Link>
           </div>
