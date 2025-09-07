@@ -1,50 +1,74 @@
-'use client'
+"use client";
 
-import Video from "@/components/Video";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const { data: session } = useSession();
+
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
+    <main className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center">
+      {/* Hero Section */}
+      <section className="text-center mt-20 px-6">
+        <span className="text-sm bg-purple-900/30 text-purple-400 px-3 py-1 rounded-full">
+          Smarter Answers, Instantly
+        </span>
+        <h1 className="text-5xl font-extrabold mt-6 leading-tight">
+          Welcome to <span className="text-purple-400">Intellio</span>
+        </h1>
+        <p className="text-gray-400 mt-6 text-lg max-w-2xl mx-auto">
+          Intellio is your intelligent AI assistant that solves queries in
+          real-time. Whether it’s code, knowledge, or creative brainstorming—
+          Intellio delivers fast, accurate, and reliable solutions.
+        </p>
+      </section>
 
-      {/* Fullscreen Video Background */}
-      <Video className='absolute top-0 left-0 w-full h-full z-0' />
+      {/* Features Section */}
+      <section className="grid md:grid-cols-2 gap-6 mt-16 max-w-4xl px-6">
+        {/* Card 1: Ask a Question */}
+        <Card className="rounded-2xl shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 bg-gray-800/70 border border-gray-700 transition">
+          <CardContent className="p-8 text-center">
+            <div className="text-4xl text-purple-400">🤖</div>
+            <h3 className="text-xl font-semibold mt-4">Ask Anything</h3>
+            <p className="text-gray-400 mt-2">
+              Get instant AI-powered answers to your queries. From coding help
+              to knowledge and ideas—Intellio has you covered.
+            </p>
 
-      {/* Overlay for better text visibility */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-10"></div>
+            <Link href={session ? "/ai-tool" : "/login"} passHref>
+              <Button
+                variant="default"
+                className="mt-4 bg-purple-500 hover:bg-purple-600 text-white"
+              >
+                Start Asking →
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
 
-      {/* Main Content */}
-      <div className="relative z-20 flex flex-col justify-between items-center h-full py-10 px-5">
-
-        {/* Hero Heading */}
-        <div className="text-center text-[5vw] md:text-[4vw] lg:text-[3vw] font-extrabold leading-[1.1] text-white">
-          <div>Empowering Ideas</div>
-          <div className="flex gap-x-2 justify-center items-center mt-2">
-            with the 
-            <div className="flex justify-center items-center mx-2 rounded-full overflow-hidden">
-              <Video className='h-[6vw] w-[13vw]' />
-            </div>
-            Next
-          </div>
-          <div>Generation of AI</div>
-        </div>
-
-        {/* Subtext */}
-        <div className="w-[90%] md:w-[70%] text-center text-[1.8vw] md:text-[1.4vw] lg:text-[1.1vw] font-medium leading-snug text-white mt-6">
-          Chat with AI that actually gets you, brainstorm wild ideas in seconds, or solve problems before your coffee even cools down. The future isn’t coming, it’s already here, and it’s powered by us.
-        </div>
-
-        {/* Buttons */}
-        <div className='flex flex-col sm:flex-row items-center justify-center gap-4 mt-8'>
-          <Link href='/ai-tool' className='px-12 py-3 rounded-full border-2 border-green-400 text-white font-bold uppercase text-[5vw] md:text-[1.2vw] hover:bg-green-400 hover:text-black transition-all duration-300'>
-            AI Search
-          </Link>
-          <Link href='/login' className='px-12 py-3 rounded-full border-2 border-green-400 text-white font-bold uppercase text-[5vw] md:text-[1.2vw] hover:bg-green-400 hover:text-black transition-all duration-300'>
-            Login
-          </Link>
-        </div>
-
-      </div>
-    </div>
-  )
+        {/* Card 2: Sign Up */}
+        <Card className="rounded-2xl shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 bg-gray-800/70 border border-gray-700 transition">
+          <CardContent className="p-8 text-center">
+            <div className="text-4xl text-purple-400">🚀</div>
+            <h3 className="text-xl font-semibold mt-4">Join Intellio</h3>
+            <p className="text-gray-400 mt-2">
+              Unlock the full power of AI assistance. Create your account to
+              save queries, explore personalized insights, and stay ahead with
+              Intellio.
+            </p>
+            <Link href="/register" passHref>
+              <Button
+                variant="default"
+                className="mt-4 bg-purple-500 hover:bg-purple-600 text-white"
+              >
+                Sign Up →
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </section>
+    </main>
+  );
 }

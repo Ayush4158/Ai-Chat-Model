@@ -38,7 +38,7 @@ const page = () => {
   }
 
   return (
-    <div className=' h-screen w-screen flex items-center bg-black justify-center'>
+    <div className=' h-screen w-screen flex items-center bg-black justify-center text-white'>
 
       <div className='flex absolute h-full w-full justify-center items-center'>
       <div className='  h-[50%] w-[50%] bg-blue-700/90 blur-[250px] rounded-full animate-pulse'></div>
