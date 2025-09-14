@@ -25,7 +25,7 @@ const page = () => {
       const response = await axios.post('/api/auth/register', {email, password})
 
       if(response.status === 201){
-        router.push("/login")
+        router.push("/ai-tool")
       }
 
     } catch (error) {

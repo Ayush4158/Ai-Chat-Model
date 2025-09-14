@@ -1,51 +1,52 @@
 import { NextAuthOptions } from "next-auth"
-import GithubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github"
+import GoogleProvider from "next-auth/providers/google"
+import CredentialsProvider from "next-auth/providers/credentials"
 import { connectionToDb } from "./db"
 import User from "@/model/User"
-import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcryptjs"
 
-
-export const authOptions:NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {label: "Email", type:"email"},
-        password: {label: "Password", type:"password"}
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
       },
-
-      async authorize(credentials){
-        if(!credentials?.email || !credentials?.password){
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
           throw new Error("Missing email or password")
         }
 
         try {
           await connectionToDb()
+          console.log("✅ Database Connected (Login)")
 
-          const user = await User.findOne({email: credentials.email})
-          if(!user){
-            throw new Error("No user found whith this credentials")
+          const user = await User.findOne({ email: credentials.email })
+          console.log("🔎 Fetched User:", user)
+
+          if (!user) {
+            throw new Error("No user found with this email")
           }
 
+          console.log("🔑 Comparing Password...")
           const isPasswordValid = await bcrypt.compare(
-            credentials.password, user.password
+            credentials.password,
+            user.password
           )
+          console.log("✅ Password Valid:", isPasswordValid)
 
-          console.log(isPasswordValid)
-
-          if(!isPasswordValid){
+          if (!isPasswordValid) {
             throw new Error("Invalid password")
           }
-          console.log("sab thik")
 
           return {
             id: user._id.toString(),
             email: user.email
           }
         } catch (error) {
-          console.error("Auth error", error)
+          console.error("❌ Auth error:", error)
           throw error
         }
       }
@@ -53,7 +54,7 @@ export const authOptions:NextAuthOptions = {
 
     GithubProvider({
       clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
+      clientSecret: process.env.GITHUB_SECRET!
     }),
 
     GoogleProvider({
@@ -63,17 +64,12 @@ export const authOptions:NextAuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user}){
-      if(user){
-        token.id = user.id
-      }
+    async jwt({ token, user }) {
+      if (user) token.id = user.id
       return token
     },
-
-    async session({session, token}){
-      if(session.user){
-        session.user.id = token.id as string;
-      }
+    async session({ session, token }) {
+      if (session.user) session.user.id = token.id as string
       return session
     }
   },
@@ -82,9 +78,9 @@ export const authOptions:NextAuthOptions = {
     signIn: "/login",
     error: "/login"
   },
-  session:{
-    strategy: "jwt",
-    maxAge: 30*24*60*60
-  }
 
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60 // 30 days
+  }
 }
